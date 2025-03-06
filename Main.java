@@ -11,7 +11,7 @@ public class Main
         inventory.addProduct(product2);
         inventory.addProduct(product3);
 
-        System.out.println("Current inventory: ");
+        System.out.println("\nCurrent inventory:");
         inventory.displayInventory();
 
         System.out.println("\nCheck low inventory:");
