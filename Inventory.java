@@ -36,4 +36,13 @@ public class Inventory
             System.out.println(product.getName() + ": " + product.getQuantity() + " units");
         }
     }
+
+
+    public ArrayList<Product> getProducts() {
+    return products;
+    }
+
+
+
+    
 }
