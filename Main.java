@@ -1,26 +1,58 @@
+import java.util.Scanner;
+
 public class Main 
 {
     public static void main(String[] args) 
     {
+        Scanner input = new Scanner(System.in);
         Inventory inventory = new Inventory();
 
-        Product product1 = new Product("Apples", 1000);
-        Product product2 = new Product("Pears", 500);
-        Product product3 = new Product("Oranges", 75);
-        inventory.addProduct(product1);
-        inventory.addProduct(product2);
-        inventory.addProduct(product3);
+        System.out.println("1: Display Inventory");
+        System.out.println("2: Check Low Inventory");
+        System.out.println("3: Add Product");
+        System.out.println("4: Remove Product");
+        System.out.println("5: Exit");
+        System.out.println("Input: ");
 
-        System.out.println("\nCurrent inventory:");
-        inventory.displayInventory();
+        uInput = scanner.nextInt();
+        scanner.nextLine();
+       
 
-        System.out.println("\nCheck low inventory:");
-        inventory.checkLowInventory();
+          switch (choice) {
+                case 1:
+                    inventory.displayInventory();
+                    break;
 
-        System.out.println("\nRemove Pears from inventory:");
-        inventory.removeProduct(product2);
+                case 2:
+                    inventory.checkLowInventory();
+                    break;
 
-        System.out.println("\nAgain check low inventory: ");
-        inventory.checkLowInventory();
+                case 3:
+                    System.out.print("Enter Product Name: ");
+                    String productName = scanner.nextLine();
+                    System.out.print("Enter quantity: ");
+                    int productQuantity = scanner.nextInt();
+                    scanner.nextLine(); 
+                    inventory.addProduct(new Product(productName, productQuantity));
+                    System.out.println(productName + " added to inventory.");
+                    break;
+
+                case 4:
+                    System.out.print("Enter product name to remove: ");
+                    String removeName = scanner.nextLine();
+                    Product toRemove = inventory.findProductByName(removeName);
+                    if (toRemove != null) {
+                        inventory.removeProduct(toRemove);
+                        System.out.println(removeName + " removed from inventory.");
+                    } else {
+                        System.out.println("Product not found.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Exiting... ");
+                    break;
+
+                  
     }
 }
