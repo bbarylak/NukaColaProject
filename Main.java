@@ -14,11 +14,11 @@ public class Main
         System.out.println("5: Exit");
         System.out.println("Input: ");
 
-        uInput = scanner.nextInt();
+        uInput = input.nextInt();
         scanner.nextLine();
        
 
-          switch (choice) {
+          switch (uInput) {
                 case 1:
                     inventory.displayInventory();
                     break;
@@ -28,9 +28,9 @@ public class Main
                     break;
 
                 case 3:
-                    System.out.print("Enter Product Name: ");
+                    System.out.print("Enter Product Name to Add: ");
                     String productName = scanner.nextLine();
-                    System.out.print("Enter quantity: ");
+                    System.out.print("Enter Product Quantity: ");
                     int productQuantity = scanner.nextInt();
                     scanner.nextLine(); 
                     inventory.addProduct(new Product(productName, productQuantity));
@@ -38,19 +38,23 @@ public class Main
                     break;
 
                 case 4:
-                    System.out.print("Enter product name to remove: ");
+                    System.out.print("Enter Product Name to Remove: ");
                     String removeName = scanner.nextLine();
-                    Product toRemove = inventory.findProductByName(removeName);
-                    if (toRemove != null) {
-                        inventory.removeProduct(toRemove);
-                        System.out.println(removeName + " removed from inventory.");
-                    } else {
-                        System.out.println("Product not found.");
+
+                    for (Product p : inventory.getProducts()) {
+                        if (p.getName().equals(removeName)) {
+                            inventory.removeProduct(p);
+                            System.out.print.ln(removeName + "Removed from Infentory.");
+                            break;
+                        }
                     }
                     break;
+                    
+       
 
                 case 5:
                     System.out.println("Exiting... ");
+                    input.close();
                     break;
 
                   
