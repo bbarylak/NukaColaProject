@@ -19,8 +19,10 @@ public class Main
 
         boolean run = true
        
-        while (run)
-          switch (uInput) {
+        while (run) 
+        {
+          switch (uInput) 
+          {
                 case 1:
                     inventory.displayInventory();
                     break;
@@ -43,8 +45,10 @@ public class Main
                     System.out.print("Enter Product Name to Remove: ");
                     String removeName = input.nextLine();
 
-                    for (Product p : inventory.getProducts()) {
-                        if (p.getName().equals(removeName)) {
+                    for (Product p : inventory.getProducts()) 
+                    {
+                        if (p.getName().equals(removeName)) 
+                        {
                             inventory.removeProduct(p);
                             System.out.println(removeName + " Removed from Inventory.");
                             break;
@@ -61,5 +65,7 @@ public class Main
                 default:
                     System.out.println("\nInvalid Input, Please Try Again")
                   
+            }
+        }
     }
 }
