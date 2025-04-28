@@ -1,70 +1,160 @@
-import java.util.Scanner;
+import java.io.IOException;
+import java.util.*;
 
 public class Main 
 {
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
-        Scanner input = new Scanner(System.in);
+        Scanner in = new Scanner(System.in);
         Inventory inventory = new Inventory();
 
-        System.out.println("1: Display Inventory");
-        System.out.println("2: Check Low Inventory");
-        System.out.println("3: Add Product");
-        System.out.println("4: Remove Product");
-        System.out.println("5: Exit");
-        System.out.println("Input: ");
-
-        int uInput = input.nextInt();
-        scanner.nextLine();
-
-        boolean run = true
-       
-        while (run) 
+        try
         {
-          switch (uInput) 
-          {
-                case 1:
-                    inventory.displayInventory();
-                    break;
+            inventory.load();
+        }
+        catch(IOException | ClassNotFoundException e)
+        {
+            System.err.println("Error: " + e.getMessage());
+        }
 
-                case 2:
-                    inventory.checkLowInventory();
-                    break;
+        int input;
+        boolean run = true;
 
-                case 3:
-                    System.out.print("Enter Product Name to Add: ");
-                    String productName = input.nextLine();
-                    System.out.print("Enter Product Quantity: ");
-                    int productQuantity = input.nextInt();
-                    input.nextLine(); 
-                    inventory.addProduct(new Product(productName, productQuantity));
-                    System.out.println(productName + " added to inventory.");
-                    break;
+        while(run)
+        {
+            System.out.println("\nWhat Would You Like To Do?");
+            System.out.println("1: Show Inventory");
+            System.out.println("2: Check Low Inventory");
+            System.out.println("3: Add New Product");
+            System.out.println("4: Add To Product Quantity");
+            System.out.println("5: Subtract From Product Quantity");
+            System.out.println("6: Delete Product");
+            System.out.println("7: Save Changes");
+            System.out.println("8: Exit");
+            System.out.print("Input: ");
 
-                case 4:
-                    System.out.print("Enter Product Name to Remove: ");
-                    String removeName = input.nextLine();
+            input = in.nextInt();
 
-                    for (Product p : inventory.getProducts()) 
+            switch(input)
+            {
+                case 1 -> inventory.displayInventory();
+
+                case 2 -> inventory.checkLowInventory();
+
+                case 3 -> 
+                {
+                    String productName;
+                    int productQuantity;
+                    System.out.println("\nEnter Name Of Product To Add: ");
+                    productName = in.next();
+                    System.out.println("\nEnter Product Quantity: ");
+                    productQuantity = in.nextInt();
+                    try
                     {
-                        if (p.getName().equals(removeName)) 
+                        inventory.addProduct(new Product(productName, productQuantity));
+                    }
+                    catch(InvalidInput e)
+                    {
+                        System.err.println("Error: " + e.getMessage());
+                    }
+                    System.out.println(productQuantity + " " + productName + " Added To Inventory");
+                }
+
+                case 4 ->
+                {
+                    String updateName;
+                    int updateAmount;
+                    System.out.println("\nEnter Name Of Product To Add To: ");
+                    updateName = in.next();
+                    System.out.println("\nEnter How Much To Add: ");
+                    updateAmount = in.nextInt();
+                    for (Product p : inventory.getProducts())
+                    {
+                        if(p.getName().equals(updateName))
                         {
-                            inventory.removeProduct(p);
-                            System.out.println(removeName + " Removed from Inventory.");
+                            try
+                            {
+                                inventory.updateProductAdd(p, updateAmount);
+                                System.out.println(updateAmount + " " + updateName + " Added To Inventory");
+                            }
+                            catch(NegativeInException e)
+                            {
+                                System.err.println("\nError: " + e.getMessage());
+                            }
                             break;
                         }
                     }
-                    break;
-                    
-                case 5:
-                    run = false;
-                    System.out.println("Exiting... ");
-                    input.close();
-                    break;
+                }   
 
-                default:
-                    System.out.println("\nInvalid Input, Please Try Again")
-                  
+                case 5 ->
+                {
+                    String updateName;
+                    int updateAmount;
+                    System.out.println("\nEnter Name Of Product To Subtract From: ");
+                    updateName = in.next();
+                    System.out.println("\nEnter How Much To Subtract: ");
+                    updateAmount = in.nextInt();
+                    for (Product p : inventory.getProducts())
+                    {
+                        if(p.getName().equals(updateName))
+                        {
+                            try
+                            {
+                                inventory.updateProductSub(p, updateAmount);
+                                System.out.println(updateAmount + " " + updateName + " Deleted From Inventory");
+                            }
+                            catch(NegativeOutException | NegativeInException e)
+                            {
+                                System.err.println("\nError: " + e.getMessage());
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                case 6 -> 
+                {
+                    String removeName;
+                    System.out.print("\nEnter Name Of Product To Delete: ");
+                    removeName = in.next();
+                    for (Product p : inventory.getProducts())
+                    {
+                        if(p.getName().equals(removeName))
+                        {
+                            try
+                            {
+                                inventory.removeProduct(p);
+                            }
+                            catch(ItemNotFound e)
+                            {
+                                System.err.println("Error: " + e.getMessage());
+                            }
+                            System.out.println(removeName + " Deleted From Inventory");
+                            break;
+                        }
+                    }
+                }
+
+                case 7 -> 
+                {
+                    try
+                    {
+                        inventory.save();
+                    }
+                    catch(IOException e)
+                    {
+                        System.err.println("Error: " + e.getMessage());
+                    }
+                }
+
+                case 8 ->
+                {
+                    run = false;
+                    System.out.println("Exiting...");
+                    in.close();
+                }
+
+                default -> System.out.println("\nInvalid Input, Please Try Again");
             }
         }
     }
